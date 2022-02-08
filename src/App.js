@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Routes from './routes';
+import { Provider } from 'react-redux';
 
-function App() {
+import GlobalStyle from './globalStyles';
+
+import Header from './components/Header'
+import Announcement from './components/Announcement';
+import store from './components/store';
+
+const App = () => {
+
+  const localCart = JSON.parse(localStorage.getItem('dioshopping: cart'))
+
+  if (localCart !== null) {
+    store.dispatch({ type: 'CHANGE_CART', localCart })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Provider store={store}>
+      <Router>
+        <GlobalStyle />
+        <Announcement />
+        <Header />
+        <Routes />
+      </Router>
+    </Provider>
+  )
 }
 
 export default App;
